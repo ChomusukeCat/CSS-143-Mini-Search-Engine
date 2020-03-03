@@ -21,10 +21,11 @@ public class MyMiniSearchEngine {
         int n = texts.size();
         List<List<Integer>> position = new LinkedList<>();
         String text = texts.toString();
-        String[] words = text.split(",");//split words from docs then add to array
-        text = String.join("", words);
-        String[] words0 = text.split(" ");
-        String[] wordsSplit = new String[n];
+        //split words from docs then add to array
+        String[] words = text.split(",");//array containing words split by comma
+        text = String.join("", words);//string containing words split by space
+        String[] words0 = text.split(" ");//array containing words split by space and comma
+        String[] wordsSplit = new String[n];//array holding final split words
         for (int i = 0; i < words0.length; i++) {
             System.out.print(words0[i] + ", ");
         }
