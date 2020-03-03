@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MyMiniSearchEngine {
     // default solution. OK to change.
@@ -19,6 +17,47 @@ public class MyMiniSearchEngine {
     // assume documents only contain alphabetical words separated by white spaces.
     private void index(List<String> texts) {
         //homework
+        Map<String, List<List<Integer>>> indexes = new HashMap<>();
+        int n = texts.size();
+        List<List<Integer>> position = new LinkedList<>();
+        String text = texts.toString();
+        String[] words = text.split(",");//split words from docs then add to array
+        text = String.join("", words);
+        String[] words0 = text.split(" ");
+        String[] wordsSplit = new String[n];
+        for (int i = 0; i < words0.length; i++) {
+            System.out.print(words0[i] + ", ");
+        }
+        System.out.println();
+        /*add all words into array from doc
+        use another array that only contains diff words
+        if curr word i is not the same as other words, add to 2nd array
+        */
+        for(int i = 0; i < n; i++) {
+            for (int j = 1; j < n; j++) {
+                if (!words0[i].equals(words0[j])) {
+                    wordsSplit[i] = words[j];
+                    break;
+                }
+            }
+        }
+        System.out.println("wordsSplit: ");
+        for(int i = 0; i < wordsSplit.length; i++) {
+            System.out.print( wordsSplit[i] + " ");
+        }
+        System.out.println();
+        for(int i = 0; i < n; i++) {
+            List<Integer> pos = new LinkedList<>();
+            //traverse strings of each doc
+            for(int j = 0; j < wordsSplit.length; j++) {
+                if(wordsSplit[i].equals(words[j])){
+                    pos.add(j);
+                    position.add(pos);
+                }
+            }
+            indexes.put(wordsSplit[i], position);
+        }
+        System.out.println(indexes);
     }
 
     // search(key) return all the document ids where the given key phrase appears.
@@ -26,6 +65,7 @@ public class MyMiniSearchEngine {
     // return an empty list if search() finds no match in all documents.
     public List<Integer> search(String keyPhrase) {
         // homework
+
         return new ArrayList<>(); // place holder
     }
 }
