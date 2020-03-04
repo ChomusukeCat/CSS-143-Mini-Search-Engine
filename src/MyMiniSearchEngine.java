@@ -23,42 +23,34 @@ public class MyMiniSearchEngine {
         String text = texts.toString();
         //split words from docs then add to array
         String[] words = text.split(",");//array containing words split by comma
-        text = String.join("", words);//string containing words split by space
+        text = String.join("", words);//string containing words split by space & comma
+        text = text.replaceAll("\\p{P}","");//remove brackets from string
         String[] words0 = text.split(" ");//array containing words split by space and comma
-        String[] wordsSplit = new String[n];//array holding final split words
-        for (int i = 0; i < words0.length; i++) {
-            System.out.print(words0[i] + ", ");
-        }
-        System.out.println();
-        /*add all words into array from doc
-        use another array that only contains diff words
-        if curr word i is not the same as other words, add to 2nd array
-        */
-        for(int i = 0; i < n; i++) {
-            for (int j = 1; j < n; j++) {
-                if (!words0[i].equals(words0[j])) {
-                    wordsSplit[i] = words[j];
-                    break;
-                }
+        ArrayList<String> wordsList = new ArrayList<>();//list holding final split words
+
+        //add each word into wordList
+        for(int i = 0; i < words0.length; i++){
+            if(!wordsList.contains(words0[i])){
+                wordsList.add(words0[i]);
             }
         }
-        System.out.println("wordsSplit: ");
-        for(int i = 0; i < wordsSplit.length; i++) {
-            System.out.print( wordsSplit[i] + " ");
+        for(int numWords = 0; numWords < wordsList.size(); numWords++){
+            indexes.put(wordsList.get(numWords), position);
         }
-        System.out.println();
-        for(int i = 0; i < n; i++) {
+
+        for(int docIndex = 0; docIndex < texts.size(); docIndex++) {
             List<Integer> pos = new LinkedList<>();
+            position.add(pos);
             //traverse strings of each doc
-            for(int j = 0; j < wordsSplit.length; j++) {
-                if(wordsSplit[i].equals(words[j])){
-                    pos.add(j);
-                    position.add(pos);
+            for(int strIndex = 0; strIndex < texts.size(); strIndex++) {
+                if(wordsList.get(docIndex).equals(wordsList.get(strIndex))){
+                    //pos.add(strIndex);
+
                 }
             }
-            indexes.put(wordsSplit[i], position);
+
         }
-        System.out.println(indexes);
+        System.out.println("indexes: " + indexes);
     }
 
     // search(key) return all the document ids where the given key phrase appears.
