@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class MyMiniSearchEngine {
@@ -25,7 +26,7 @@ public class MyMiniSearchEngine {
         String[] wordsArr = text.split(",");
         text = String.join("", wordsArr);//string containing words split by space & comma
         text = text.replaceAll("\\p{P}","");//remove brackets from string
-        wordsArr = text.split(" ");//array containing words split by space and comma
+        wordsArr = text.split(" ");//array containing words
         ArrayList<String> wordsList = new ArrayList<>();//list holding final split words
 
         //add each word into wordList
@@ -34,24 +35,31 @@ public class MyMiniSearchEngine {
                 wordsList.add(wordsArr[i]);
             }
         }
-        //add words into index
-        /*for(int numWords = 0; numWords < wordsList.size(); numWords++){
 
-            indexes.put(wordsList.get(numWords), doc);
-        }*/
+        System.out.println("wordsList" + wordsList.toString());
+        System.out.print("wordsArr:" );
+        for(int i = 0; i < wordsArr.length; i++){
+           System.out.print(wordsArr[i] + ", ");
+        }
+        System.out.println();
 
-        //add location of words into index
-        for(int docIndex = 0; docIndex < texts.size(); docIndex++) {
-            List<List<Integer>> doc = new LinkedList<>();
-            List<Integer> pos = new LinkedList<>();
-            doc.add(pos);
-            //traverse strings of each doc
-            for(int strIndex = 0; strIndex < texts.size(); strIndex++) {
-                if(wordsList.get(docIndex).equals(wordsArr[strIndex])){
-                   pos.add(strIndex);
+        //add position of words into index
+        for(int docIndex = 0; docIndex < wordsList.size(); docIndex++) {
+            List<List<Integer>> docs = new LinkedList<>();
+            //List<Integer> doc = new LinkedList<>();
+
+            //add number of lists corresponding to num of documents provided into docs lists
+            for(int i = 0; i < texts.size(); i ++) {
+                docs.add(new LinkedList<>());
+            }
+
+            //traverse each word of each document
+            for(int wordIndex = 0; wordIndex < wordsArr.length; wordIndex++) {
+                if(wordsList.get(docIndex).equals(wordsArr[wordIndex])){//if curr word is found in doc, add its position to index
+                    docs.get(docIndex).add(wordIndex);
                 }
             }
-            indexes.put(wordsList.get(docIndex), doc);
+            indexes.put(wordsList.get(docIndex), docs);
         }
         System.out.println("indexes: " + indexes);
     }
