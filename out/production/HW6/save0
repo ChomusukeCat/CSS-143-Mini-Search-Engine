@@ -1,0 +1,12 @@
+for(int docIndex = 0; docIndex < texts.size(); docIndex++) {
+            List<List<Integer>> doc = new LinkedList<>();
+            List<Integer> pos = new LinkedList<>();
+            doc.add(pos);
+            //traverse strings of each doc
+            for(int strIndex = 0; strIndex < texts.size(); strIndex++) {
+                if(wordsList.get(docIndex).equals(wordsArr[strIndex])){
+                   pos.add(strIndex);
+                }
+            }
+            indexes.put(wordsList.get(docIndex), doc);
+        }
