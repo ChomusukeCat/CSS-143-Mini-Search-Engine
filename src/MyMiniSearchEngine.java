@@ -19,36 +19,39 @@ public class MyMiniSearchEngine {
         //homework
         Map<String, List<List<Integer>>> indexes = new HashMap<>();
         int n = texts.size();
-        List<List<Integer>> position = new LinkedList<>();
         String text = texts.toString();
+
         //split words from docs then add to array
-        String[] words = text.split(",");//array containing words split by comma
-        text = String.join("", words);//string containing words split by space & comma
+        String[] wordsArr = text.split(",");
+        text = String.join("", wordsArr);//string containing words split by space & comma
         text = text.replaceAll("\\p{P}","");//remove brackets from string
-        String[] words0 = text.split(" ");//array containing words split by space and comma
+        wordsArr = text.split(" ");//array containing words split by space and comma
         ArrayList<String> wordsList = new ArrayList<>();//list holding final split words
 
         //add each word into wordList
-        for(int i = 0; i < words0.length; i++){
-            if(!wordsList.contains(words0[i])){
-                wordsList.add(words0[i]);
+        for(int i = 0; i < wordsArr.length; i++){
+            if(!wordsList.contains(wordsArr[i])){
+                wordsList.add(wordsArr[i]);
             }
         }
-        for(int numWords = 0; numWords < wordsList.size(); numWords++){
-            indexes.put(wordsList.get(numWords), position);
-        }
+        //add words into index
+        /*for(int numWords = 0; numWords < wordsList.size(); numWords++){
 
+            indexes.put(wordsList.get(numWords), doc);
+        }*/
+
+        //add location of words into index
         for(int docIndex = 0; docIndex < texts.size(); docIndex++) {
+            List<List<Integer>> doc = new LinkedList<>();
             List<Integer> pos = new LinkedList<>();
-            position.add(pos);
+            doc.add(pos);
             //traverse strings of each doc
             for(int strIndex = 0; strIndex < texts.size(); strIndex++) {
-                if(wordsList.get(docIndex).equals(wordsList.get(strIndex))){
-                    //pos.add(strIndex);
-
+                if(wordsList.get(docIndex).equals(wordsArr[strIndex])){
+                   pos.add(strIndex);
                 }
             }
-
+            indexes.put(wordsList.get(docIndex), doc);
         }
         System.out.println("indexes: " + indexes);
     }
