@@ -57,7 +57,18 @@ public class MyMiniSearchEngineTest {
     @Test
     public void testFourWord() {
         // homework
-        assertTrue(false); // place holder
+        MyMiniSearchEngine engine = new MyMiniSearchEngine(documents());
+
+        String[] inputs = {
+                "rains hello abc sunday",
+                "rains Hello abc sunday",
+        };
+
+        for (String input : inputs) {
+            List<Integer> result = engine.search(input);
+            assertEquals(1, result.size());
+            assertEquals(List.of(5), result);
+        }
     }
 
     @Test
