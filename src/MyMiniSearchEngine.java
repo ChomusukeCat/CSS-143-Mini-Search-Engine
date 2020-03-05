@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MyMiniSearchEngine {
     // default solution. OK to change.
@@ -83,17 +84,17 @@ public class MyMiniSearchEngine {
         //2. traverse occurrences, if kP and occurrence in curr doc matches, add to list
 
         keyPhrase = keyPhrase.toLowerCase();
+
         //place kP into arr
         String[] kPArr = keyPhrase.split(" ");
-        System.out.println("Index:" + indexes);
-
+        List<Integer> result = new ArrayList<>();
         //check if kP found in index
         for(int i = 0; i < kPArr.length; i++){
             if(!indexes.containsKey(kPArr[i])){
-                return null;
+                result.add(-1);
+                return result;
             }
         }
-        List<Integer> result = new ArrayList<>();
         List<List<List<Integer>>> inst = new LinkedList<>();//keeps instances of kP found in index
 
         //extract keys from indexes into Str arr
@@ -111,21 +112,54 @@ public class MyMiniSearchEngine {
                 }
             }
         }
-        List<Integer> r = new LinkedList<>();
+        List<Integer> docIds = new LinkedList<>();
+
+        //if kP contains more than one word
         if(kPArr.length > 1) {
-            //when both words in kP appear,
+            //when both words in kP appear, add the doc into the list
             for(int outerList = 0; outerList < inst.size()-1; outerList++){
                 int i = 0;
                 for(int innerList = 0; innerList < inst.get(outerList).size(); innerList++) {
                     if (!inst.get(outerList).get(innerList).isEmpty() && !inst.get(outerList + 1).get(innerList).isEmpty()) {
-                        r.add(i);
-                        System.out.println(r);
+                        docIds.add(i);
                     }
                     i++;
+                }
+
+            }
+            //remove duplicate vals
+            List<Integer> noDupes = new LinkedList<>();
+            noDupes = docIds.stream()
+                    .distinct()
+                    .collect(Collectors.toList());
+            docIds = noDupes;
+            //System.out.println(docIds);
+
+            int indx = 0;
+            for(int docIndx = 1; docIndx < inst.size(); docIndx++) {
+                for (int docID = 0; docID < docIds.size(); docID++) {
+                    if ((inst.get(0).get(docIds.get(docID))).get(0) == (inst.get(docIndx).get(docIds.get(docID))).get(0) - 1) {
+                        result.add(docIds.get(indx));
+                        //System.out.println(result);
+                    }
+                    indx++;
                 }
             }
         }
 
-        return result; // place holder
+        //if kP is only one word
+        else {
+            //System.out.println(inst);
+                int i = 0;
+                for (int innerList = 0; innerList < inst.get(0).size(); innerList++) {
+                    if (!inst.get(0).get(innerList).isEmpty()) {
+                        docIds.add(i);
+                        //System.out.println(docIds);
+                    }
+                    i++;
+                }
+            result.addAll(docIds);
+        }
+        return result;
     }
 }
